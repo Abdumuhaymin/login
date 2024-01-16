@@ -52,21 +52,43 @@ let arr = [];
 let form = document.querySelector(".login");
 let list = document.querySelector(".list");
 const render = () => {
-  list.innerHTML = "";
-  for (let i of arr) {
-    let p = document.createElement("p");
-    p.textContent =
-      "username: " + i.username + "; " + "password: " + i.password + ";";
-    p.id = i.id;
-    list.append(p);
-  }
+  list.innerHTML = arr
+    .map(
+      (item) =>
+        `
+  <div>
+    <p>Username:${item.username}</p>
+    <button onclick="deleteItem(${item.id})">DELETE</button>
+    <button onclick="editItem(${item.id})">EDIT</button>
+  </div>
+  `
+    )
+    .join("");
 };
+// let button = document.querySelector(".click");
+// button.addEventListener("click", () => {});
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
-  arr.push({ id: Date.now(), username: name.value, password: password.value });
+  arr.push({ id: Date.now(), username: name.value });
   name.value = "";
   password.value = "";
   render();
 });
-console.log(arr);
+const deleteItem = (id) => {
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i].id === id) {
+      arr.splice(i, 1);
+    }
+    render();
+  }
+};
+const editItem = (id) => {
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i].id === id) {
+      arr[i].username = prompt("yangi nom kiriting");
+    }
+    render();
+  }
+};
+// console.log(arr);
